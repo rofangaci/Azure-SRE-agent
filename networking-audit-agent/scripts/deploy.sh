@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Deploy networking-audit-agent infrastructure
-# Usage: ./deploy.sh <environment> <subscription-id> <resource-group> [location]
+# Usage: ./deploy.sh <environment> <subscription-id> <resource-group> <location>
 # Example: ./deploy.sh dev 12345678-abcd-1234-abcd-123456789012 rg-networking-audit eastus2
 
 # ── Prerequisites ──────────────────────────────────────────────
@@ -25,10 +25,10 @@ check_prereqs() {
 check_prereqs
 
 # ── Parameters ─────────────────────────────────────────────────
-ENVIRONMENT="${1:?Usage: ./deploy.sh <environment> <subscription-id> <resource-group> [location]}"
+ENVIRONMENT="${1:?Usage: ./deploy.sh <environment> <subscription-id> <resource-group> <location>}"
 SUBSCRIPTION_ID="${2:?Subscription ID required}"
 RESOURCE_GROUP="${3:?Resource group name required}"
-LOCATION="${4:-eastus2}"
+LOCATION="${4:?Location required (e.g. eastus2, swedencentral, australiaeast)}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INFRA_DIR="${SCRIPT_DIR}/../infra"
@@ -67,12 +67,19 @@ az group create \
   --output none 2>/dev/null || true
 
 echo "Deploying infrastructure..."
-DEPLOY_OUTPUT=$(az deployment group create \
+# Create temp params file with CLI-provided location
+# (bicepparam files with 'using' don't support additional --parameters overrides)
+TEMP_PARAMS="${INFRA_DIR}/parameters/.tmp-${ENVIRONMENT}.bicepparam"
+sed "s|param location = .*|param location = '${LOCATION}'|" "${PARAMS_FILE}" > "${TEMP_PARAMS}"
+trap 'rm -f "${TEMP_PARAMS}"' EXIT
+
+DEPLOY_RAW=$(az deployment group create \
   --resource-group "${RESOURCE_GROUP}" \
-  --template-file "${INFRA_DIR}/main.bicep" \
-  --parameters "${PARAMS_FILE}" \
+  --parameters "${TEMP_PARAMS}" \
   --query 'properties.outputs' \
-  --output json)
+  --output json 2>/dev/null)
+# az CLI may emit non-JSON lines (e.g. Bicep install messages); extract only JSON
+DEPLOY_OUTPUT=$(echo "${DEPLOY_RAW}" | sed -n '/^{/,/^}/p')
 
 PRINCIPAL_ID=$(echo "${DEPLOY_OUTPUT}" | jq -r '.managedIdentityPrincipalId.value')
 CLIENT_ID=$(echo "${DEPLOY_OUTPUT}" | jq -r '.managedIdentityClientId.value')
