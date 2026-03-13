@@ -14,9 +14,6 @@ param agentName string = 'networking-audit-agent'
 ])
 param location string = 'eastus2'
 
-@description('Subscription IDs to grant the agent Reader access to')
-param targetSubscriptionIds array = []
-
 @description('Tags to apply to all resources')
 param tags object = {
   project: 'networking-audit-agent'
