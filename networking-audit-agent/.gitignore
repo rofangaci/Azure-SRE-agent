@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Azure
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Secrets - never commit
+*.pem
+*.key
+*.pfx
+secrets.json
+local.settings.json
+
+# Build outputs
+bin/
+obj/
