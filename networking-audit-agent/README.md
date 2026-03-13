@@ -1,6 +1,6 @@
 # Networking Audit Agent
 
-Azure network architecture and service audit agent specialist powered by [Azure SRE Agent](https://sre.azure.com). Performs comprehensive network security audits and architecture assessments across Azure environments.
+Azure network architecture and service audit specialist powered by [Azure SRE Agent](https://sre.azure.com). Performs comprehensive network security audits and architecture assessments across Azure environments.
 
 ## Features
 
