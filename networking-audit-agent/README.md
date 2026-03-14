@@ -23,7 +23,18 @@ networking-audit-agent/
 ├── knowledge/                      # Agent knowledge documents
 │   ├── agent-persona.md            # Agent system prompt / persona
 │   ├── agent-overview.md           # Agent capabilities and behavior
-│   └── audit-domains.md            # Audit domain reference (130+ checks)
+│   ├── audit-domains.md            # Audit domain reference (130+ checks)
+│   └── skills/                     # Audit skill playbooks (10 files)
+│       ├── SKILL.md                # Main skill orchestration & workflows
+│       ├── nsg-audit.md            # NSG & Firewall checks
+│       ├── vnet-topology.md        # VNet, hub-spoke, vWAN, gateways
+│       ├── load-balancing.md       # LB, App GW, Front Door, Traffic Mgr
+│       ├── dns-private-endpoints.md # Private endpoints & DNS records
+│       ├── paas-networking.md      # PaaS network isolation & exposure
+│       ├── dns-strategy.md         # DNS architecture & hybrid resolution
+│       ├── perimeter-security.md   # DDoS, Bastion, NAT Gateway
+│       ├── network-management.md   # Firewall Mgr, AVNM, Network Watcher
+│       └── alz-deployment-baseline.md # ALZ VBD checklist reference
 ├── scripts/                        # Helper scripts (Bash + PowerShell)
 │   ├── deploy.sh / deploy.ps1     # Deploy infrastructure
 │   ├── setup-rbac.sh / .ps1       # Configure RBAC for target subscriptions
@@ -51,17 +62,26 @@ networking-audit-agent/
 
 Deploys the user-assigned managed identity that the agent will use.
 
+> **Supported Regions:** Azure SRE Agent is currently available in **3 regions only**. You **must** deploy to one of these:
+>
+> | Region | Location code |
+> |--------|---------------|
+> | East US 2 | `eastus2` |
+> | Sweden Central | `swedencentral` |
+> | Australia East | `australiaeast` |
+>
+> Deploying to an unsupported region will fail. The deploy scripts validate this automatically.
+
 **Bash:**
 ```bash
 ./scripts/deploy.sh prod <subscription-id> <resource-group> [location]
+# location defaults to eastus2 if omitted
 ```
 
 **PowerShell:**
 ```powershell
 ./scripts/deploy.ps1 -Environment prod -SubscriptionId "<sub-id>" -ResourceGroup "<rg>" -Location "eastus2"
 ```
-
-Supported locations: `eastus2`, `swedencentral`, `australiaeast`
 
 ### Step 2: Create the Agent
 
@@ -85,9 +105,9 @@ Grants the agent Reader + Network Contributor access to subscriptions it will au
 ./scripts/setup-rbac.ps1 -PrincipalId "<principal-id>" -SubscriptionIds "<sub-1>", "<sub-2>"
 ```
 
-### Step 4: Upload Knowledge
+### Step 4: Upload Knowledge & Skills
 
-Uploads the documents in `knowledge/` to the agent's knowledge base via the ARM API.
+Uploads all documents in `knowledge/` **and** `knowledge/skills/` to the agent's knowledge base via the ARM API. This includes 3 core knowledge docs and 10 skill playbooks (the audit capabilities).
 
 **Bash:**
 ```bash
@@ -99,7 +119,9 @@ Uploads the documents in `knowledge/` to the agent's knowledge base via the ARM 
 ./scripts/upload-knowledge.ps1 -AgentResourceId "<agent-resource-id>"
 ```
 
-Or upload manually: **sre.azure.com → Agent → Knowledge → Upload**
+> **Note:** The skills in `knowledge/skills/` are the agent's operational playbooks for all 8 audit domains. Without them, the agent will not have audit capabilities. See [knowledge/skills/README.md](knowledge/skills/README.md) for the full list.
+
+Or upload manually: **sre.azure.com → Agent → Knowledge → Upload** (upload all `.md` files from both `knowledge/` and `knowledge/skills/`)
 
 ### Step 5: Connect Repository
 

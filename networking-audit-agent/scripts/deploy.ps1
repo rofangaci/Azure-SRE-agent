@@ -71,6 +71,7 @@ $output = az deployment group create `
     --resource-group $ResourceGroup `
     --template-file (Join-Path $InfraDir "main.bicep") `
     --parameters $ParamsFile `
+    --parameters location=$Location `
     --query "properties.outputs" `
     --output json | ConvertFrom-Json
 

@@ -49,7 +49,11 @@ Write-Host "Agent: $AgentResourceId`n"
 $success = 0
 $failed = 0
 
-Get-ChildItem -Path $KnowledgeDir -Filter "*.md" | ForEach-Object {
+# Collect all .md files recursively (knowledge/*.md + knowledge/skills/*.md)
+$files = Get-ChildItem -Path $KnowledgeDir -Filter "*.md" -Recurse
+Write-Host "Found $($files.Count) knowledge documents to upload.`n"
+
+$files | ForEach-Object {
     $fileName = $_.Name
     Write-Host "  Uploading: $fileName..."
 
