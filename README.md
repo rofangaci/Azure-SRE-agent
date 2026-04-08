@@ -18,6 +18,18 @@ This workspace contains two separate delivery modes for networking audit capabil
 | Knowledge upload | Optional static docs for the standalone agent | Optional static docs for reference; do not upload persona as knowledge |
 | Managed identity and RBAC | Agent instance MI for standalone agent | Same instance MI used by main + subagents; RBAC must cover delegated actions |
 
+## Prerequisites
+
+| Standalone mode | Subagent mode |
+|---|---|
+| Azure subscription in target tenant | Existing SRE agent instance (already deployed on sre.azure.com) |
+| Azure CLI installed and authenticated | Access to sre.azure.com Builder |
+| Contributor role on target resource group | Same Azure subscription/tenant |
+| Access to sre.azure.com | Same managed identity RBAC scope |
+| jq installed (Bash scripts only) | |
+
+**Note:** Standalone mode deploys the agent and infrastructure from scratch. Subagent mode adds networking expertise to an existing SRE agent and requires no infrastructure deployment.
+
 ## Start Here
 
 1. For standalone deployment: open `networking-audit-agent/README.md`
