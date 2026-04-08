@@ -1,17 +1,17 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "azure-sre-networking-audit",
-  "version": "1.0.0",
-  "description": "Azure networking security and architecture audit skills for SRE Agent",
   "owner": {
     "name": "rofangaci"
+  },
+  "metadata": {
+    "description": "Azure networking security and architecture audit skills for SRE Agent",
+    "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "networking-audit-skill",
       "description": "Comprehensive Azure networking security and architecture audits against ALZ and WAF standards. Covers 8 domains with 130+ automated checks.",
-      "source": "./networking-audit-agent/knowledge/skills",
-      "category": "security"
+      "source": "./networking-audit-agent/knowledge/skills"
     }
   ]
 }
