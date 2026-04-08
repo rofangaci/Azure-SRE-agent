@@ -1,11 +1,8 @@
 {
-  "schema_version": "1.0",
-  "name": "networking-audit-skill",
   "plugins": [
     {
-      "name": "networking-audit-skill",
-      "display_name": "Networking Audit Skill",
-      "description": "Comprehensive Azure networking security and architecture audits against ALZ and WAF standards. Covers 8 domains with 130+ automated checks.",
+      "name": "Networking Audit Skill",
+      "description": "Comprehensive Azure networking security and architecture audits against ALZ and WAF standards. Covers 8 domains: NSG/Firewall, VNet Topology, Load Balancing, DNS and Private Endpoints, PaaS Networking, DNS Strategy, Perimeter Security, and Network Management. 130+ automated checks with remediation commands.",
       "version": "1.0.0",
       "author": "rofangaci",
       "skills_path": "networking-audit-agent/knowledge/skills",
@@ -13,3 +10,4 @@
     }
   ]
 }
+
