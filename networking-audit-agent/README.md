@@ -131,8 +131,8 @@ Skills are procedural playbooks with tool execution — they live in the **Skill
 3. All 8 audit domain skills are automatically available
 
 **Option B: Create Skills Manually via Skill Builder (Legacy)**
-1. Go to **sre.azure.com → Builder → Skills → Create Skill**
-2. Upload all `.md` files from `knowledge/skills/` (or `plugins/networking-audit/skills/networking_audit/`)
+1. Download all `.md` files from [`plugins/networking-audit/skills/networking_audit/`](../plugins/networking-audit/skills/networking_audit/) in this repo
+2. Go to **sre.azure.com → Builder → Skills → Create Skill → Upload** and upload the downloaded files
 3. Attach the required tools: `RunAzCliReadCommands`, `SearchResource`, `ExecutePythonCode`, `RunAzCliWriteCommands`, `SearchDocuments`
 
 > **Why two separate steps?** Knowledge Sources and Skills are distinct concepts in SRE Agent. Knowledge Sources (`Memory & Knowledge`) are static reference files with no tool access. Skills (`Builder > Skills`) are procedural guides that can execute tools like Azure CLI and Python. The upload scripts only handle Knowledge Sources — skill creation via API is not supported and must be done through the Skill Builder UI.

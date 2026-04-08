@@ -108,7 +108,7 @@ echo "  Failed:  ${FAILED}"
 echo ""
 echo "Next step: Load audit skills via the SRE Agent UI:"
 echo "  Builder > Skills > Create Skill > Upload"
-echo "  Upload all .md files from: knowledge/skills/ or plugins/networking-audit/skills/networking_audit/"
+echo "  Upload all .md files from: plugins/networking-audit/skills/networking_audit/"
 
 if [[ ${FAILED} -gt 0 ]]; then
   echo ""
