@@ -96,4 +96,4 @@ if ($failed -gt 0) {
 
 Write-Host "`nNext step: Load audit skills via the SRE Agent UI:" -ForegroundColor Cyan
 Write-Host "  Builder > Skills > Create Skill > Upload"
-Write-Host "  Upload all .md files from: plugins/networking-audit/skills/networking_audit/"
+Write-Host "  Upload all .md files from: networking-audit-agent/skills/"

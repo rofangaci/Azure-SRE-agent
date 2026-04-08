@@ -20,21 +20,21 @@ networking-audit-agent/
 │   └── parameters/
 │       ├── dev.bicepparam          # Dev environment parameters
 │       └── prod.bicepparam         # Prod environment parameters
-├── knowledge/                      # Agent knowledge documents
+├── knowledge/                      # Agent knowledge documents (upload to Memory & Knowledge)
 │   ├── agent-persona.md            # Agent system prompt / persona
 │   ├── agent-overview.md           # Agent capabilities and behavior
-│   ├── audit-domains.md            # Audit domain reference (130+ checks)
-│   └── skills/                     # Audit skill playbooks (10 files)
-│       ├── SKILL.md                # Main skill orchestration & workflows
-│       ├── nsg-audit.md            # NSG & Firewall checks
-│       ├── vnet-topology.md        # VNet, hub-spoke, vWAN, gateways
-│       ├── load-balancing.md       # LB, App GW, Front Door, Traffic Mgr
-│       ├── dns-private-endpoints.md # Private endpoints & DNS records
-│       ├── paas-networking.md      # PaaS network isolation & exposure
-│       ├── dns-strategy.md         # DNS architecture & hybrid resolution
-│       ├── perimeter-security.md   # DDoS, Bastion, NAT Gateway
-│       ├── network-management.md   # Firewall Mgr, AVNM, Network Watcher
-│       └── alz-deployment-baseline.md # ALZ VBD checklist reference
+│   └── audit-domains.md            # Audit domain reference (130+ checks)
+├── skills/                         # Audit skill playbooks — upload via Builder > Skills
+│   ├── SKILL.md                    # Main skill orchestration & workflows
+│   ├── nsg-audit.md                # NSG & Firewall checks
+│   ├── vnet-topology.md            # VNet, hub-spoke, vWAN, gateways
+│   ├── load-balancing.md           # LB, App GW, Front Door, Traffic Mgr
+│   ├── dns-private-endpoints.md    # Private endpoints & DNS records
+│   ├── paas-networking.md          # PaaS network isolation & exposure
+│   ├── dns-strategy.md             # DNS architecture & hybrid resolution
+│   ├── perimeter-security.md       # DDoS, Bastion, NAT Gateway
+│   ├── network-management.md       # Firewall Mgr, AVNM, Network Watcher
+│   └── alz-deployment-baseline.md  # ALZ VBD checklist reference
 ├── scripts/                        # Helper scripts (Bash + PowerShell)
 │   ├── deploy.sh / deploy.ps1     # Deploy infrastructure
 │   ├── setup-rbac.sh / .ps1       # Configure RBAC for target subscriptions
@@ -131,7 +131,7 @@ Skills are procedural playbooks with tool execution — they live in the **Skill
 3. All 8 audit domain skills are automatically available
 
 **Option B: Create Skills Manually via Skill Builder (Legacy)**
-1. Download all `.md` files from [`plugins/networking-audit/skills/networking_audit/`](../plugins/networking-audit/skills/networking_audit/) in this repo
+1. Download all `.md` files from the [`skills/`](skills/) folder in this repo
 2. Go to **sre.azure.com → Builder → Skills → Create Skill → Upload** and upload the downloaded files
 3. Attach the required tools: `RunAzCliReadCommands`, `SearchResource`, `ExecutePythonCode`, `RunAzCliWriteCommands`, `SearchDocuments`
 
