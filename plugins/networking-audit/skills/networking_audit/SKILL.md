@@ -1,3 +1,6 @@
+name networking_audit
+description Load this skill when the user asks to audit or review Azure network security, validate hub-spoke or Virtual WAN topology against ALZ standards, check load balancing or DNS configuration, review private endpoints or PaaS networking, or run a full networking architecture review. Covers 8 audit domains. Do NOT load for application-layer debugging.
+
 # Networking Audit Skill
 
 ## Purpose
