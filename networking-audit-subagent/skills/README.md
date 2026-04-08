@@ -31,6 +31,6 @@ Upload all files in this directory directly to the agent's **Skills** section at
 ## For Customers
 
 When deploying this agent to a new tenant:
-1. Upload all `.md` files in this directory to the agent's knowledge base
-2. The agent persona (`knowledge/agent-persona.md`) references these skills
+1. **Do NOT upload skills through Knowledge/Memory** — use Plugin Marketplace or Skill Builder only (see Options A & B above)
+2. The agent persona (`../prompts/agent-system-prompt.md`) contains the networking specialist instructions
 3. The agent will automatically load the relevant skill file based on the audit request
