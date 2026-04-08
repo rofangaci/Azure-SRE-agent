@@ -32,14 +32,12 @@ Grant roles based on intended actions:
 
 ### Step 3: Create Networking Custom Agent
 
-For this step, open `HANDOFF-SETUP.md` and copy/paste the exact values from:
-- **Networking Custom Agent Configuration**
-- **Instructions Field (Networking Custom Agent)**
+For this step, use `HANDOFF-SETUP.md` as the source of truth for all copy/paste values.
 
 In Builder -> Agent Canvas:
 1. Select **Create -> Custom Agent** and set name to `network_audit_specialist`
-2. Set **Instructions** using the text in `prompts/agent-system-prompt.md` (or use the expanded version in `HANDOFF-SETUP.md`)
-3. Set **Handoff Description** using the exact text in `HANDOFF-SETUP.md` -> **Networking Custom Agent Configuration**
+2. Paste **Instructions** from `HANDOFF-SETUP.md` -> **Instructions Field (Networking Custom Agent)**
+3. Paste **Handoff Description** from `HANDOFF-SETUP.md` -> **Networking Custom Agent Configuration**
 4. Set tools/skills scope to networking only (do not attach unrelated domain skills)
 5. Save/Apply
 
