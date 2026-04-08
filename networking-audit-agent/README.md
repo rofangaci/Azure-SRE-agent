@@ -105,9 +105,17 @@ Grants the agent Reader + Network Contributor access to subscriptions it will au
 ./scripts/setup-rbac.ps1 -PrincipalId "<principal-id>" -SubscriptionIds "<sub-1>", "<sub-2>"
 ```
 
-### Step 4: Upload Knowledge & Skills
+### Step 4: Load Skills from Marketplace Plugin
 
-Uploads all documents in `knowledge/` **and** `knowledge/skills/` to the agent's knowledge base via the ARM API. This includes 3 core knowledge docs and 10 skill playbooks (the audit capabilities).
+The networking audit skills are now available as a **marketplace plugin** packaged under `plugins/networking-audit/`. 
+
+**Option A: Load via Plugin Marketplace (Recommended)**
+1. In the SRE Agent UI, navigate to **Plugins**
+2. Add the `networking-audit-skill` plugin from the marketplace
+3. The plugin automatically loads all 8 audit domain skills + orchestration logic
+
+**Option B: Upload Knowledge & Skills Manually (Legacy)**
+For environments where plugin marketplace is not available, use the upload scripts to inject skills directly into the knowledge base:
 
 **Bash:**
 ```bash
@@ -119,9 +127,9 @@ Uploads all documents in `knowledge/` **and** `knowledge/skills/` to the agent's
 ./scripts/upload-knowledge.ps1 -AgentResourceId "<agent-resource-id>"
 ```
 
-> **Note:** The skills in `knowledge/skills/` are the agent's operational playbooks for all 8 audit domains. Without them, the agent will not have audit capabilities. See [knowledge/skills/README.md](knowledge/skills/README.md) for the full list.
-
 Or upload manually: **sre.azure.com → Agent → Knowledge → Upload** (upload all `.md` files from both `knowledge/` and `knowledge/skills/`)
+
+> **Difference:** The plugin marketplace approach (Option A) provides versioning, dependency management, and cleaner separation of concerns. The manual script approach (Option B) directly injects skills into the knowledge base and works in all environments. Both achieve the same end result: the agent gains access to all 8 audit domain skills.
 
 ### Step 5: Connect Repository
 
