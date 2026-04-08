@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Upload core knowledge documents to the SRE Agent Knowledge Sources.
-# Uploads only the 3 core docs (agent-overview.md, agent-persona.md, audit-domains.md)
-# from knowledge/ root. These are static reference files, NOT skills.
-#
-# Skills (SKILL.md, nsg-audit.md, etc.) must be created separately via:
-#   SRE Agent UI: Builder > Skills > Create Skill > Upload
-#
+# Upload knowledge documents to the SRE Agent knowledge base
 # Usage: ./upload-knowledge.sh <agent-resource-id>
 # Example: ./upload-knowledge.sh /subscriptions/.../providers/Microsoft.App/agents/networking-audit-agent
 
@@ -35,6 +29,7 @@ AGENT_RESOURCE_ID="${1:?Usage: ./upload-knowledge.sh <agent-resource-id>}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 KNOWLEDGE_DIR="${SCRIPT_DIR}/../knowledge"
+SKILLS_DIR="${SCRIPT_DIR}/../skills"
 
 # ── Get access token ───────────────────────────────────────────
 echo "=== Uploading knowledge documents ==="
@@ -54,14 +49,17 @@ API_VERSION="2025-01-01-preview"
 SUCCESS=0
 FAILED=0
 
-echo "Note: Uploading Knowledge Sources only. To load audit skills,"
-echo "      use Builder > Skills > Create Skill in the SRE Agent UI."
-echo ""
-
-# Collect only the 3 core knowledge docs from knowledge/ root (not skills/ subfolder)
+# Collect knowledge docs + skill playbooks.
 FILES=()
 for FILE in "${KNOWLEDGE_DIR}"/*.md; do
-  [[ -f "${FILE}" ]] && FILES+=("${FILE}")
+  if [[ -f "${FILE}" && "$(basename "${FILE}")" != "agent-persona.md" ]]; then
+    FILES+=("${FILE}")
+  fi
+done
+for FILE in "${SKILLS_DIR}"/*.md; do
+  if [[ -f "${FILE}" && "$(basename "${FILE}")" != "README.md" ]]; then
+    FILES+=("${FILE}")
+  fi
 done
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
@@ -104,11 +102,6 @@ echo ""
 echo "=== Upload Complete ==="
 echo "  Success: ${SUCCESS}"
 echo "  Failed:  ${FAILED}"
-
-echo ""
-echo "Next step: Load audit skills via the SRE Agent UI:"
-echo "  Builder > Skills > Create Skill > Upload"
-echo "  Upload all .md files from: networking-audit-agent/skills/"
 
 if [[ ${FAILED} -gt 0 ]]; then
   echo ""

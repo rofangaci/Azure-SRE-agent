@@ -1,0 +1,24 @@
+name: Networking Audit Skill
+description: |
+  Load this skill when the user asks to audit or review Azure network security,
+  validate hub-spoke or Virtual WAN topology against ALZ standards, check load
+  balancing or DNS configuration, review private endpoints or PaaS networking,
+  or run a full networking architecture review.
+  Covers 8 audit domains. Do NOT load for application-layer debugging.
+tools:
+  - RunAzCliReadCommands
+  - SearchResource
+  - ExecutePythonCode
+  - RunAzCliWriteCommands
+  - SearchDocuments
+files:
+  - SKILL.md
+  - nsg-audit.md
+  - vnet-topology.md
+  - load-balancing.md
+  - dns-private-endpoints.md
+  - paas-networking.md
+  - dns-strategy.md
+  - perimeter-security.md
+  - network-management.md
+  - alz-deployment-baseline.md

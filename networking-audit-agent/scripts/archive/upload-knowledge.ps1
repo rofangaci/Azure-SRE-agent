@@ -1,14 +1,9 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-    Upload core knowledge documents to the SRE Agent.
+    Upload knowledge documents to the SRE Agent knowledge base.
 .DESCRIPTION
-    Uploads the 3 core knowledge documents (agent-overview.md, agent-persona.md,
-    audit-domains.md) from knowledge/ to the agent's Knowledge Sources via the
-    ARM API. These are static reference files, NOT skills.
-
-    Skills (SKILL.md, nsg-audit.md, etc.) must be created separately via the
-    SRE Agent UI: Builder > Skills > Create Skill > Upload.
+    Reads all .md files from knowledge/ and uploads them via the ARM API.
 .PARAMETER AgentResourceId
     Full ARM resource ID of the agent.
 .EXAMPLE
@@ -33,6 +28,7 @@ if (-not $account) {
 # ── Paths ──────────────────────────────────────────────────────
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $KnowledgeDir = Join-Path $ScriptDir ".." "knowledge"
+$SkillsDir = Join-Path $ScriptDir ".." "skills"
 
 # ── Token ──────────────────────────────────────────────────────
 $token = az account get-access-token --query accessToken -o tsv 2>$null
@@ -48,16 +44,19 @@ $headers = @{
 }
 
 # ── Upload ─────────────────────────────────────────────────────
-Write-Host "`n=== Uploading core knowledge documents ===" -ForegroundColor Cyan
+Write-Host "`n=== Uploading knowledge documents ===" -ForegroundColor Cyan
 Write-Host "Agent: $AgentResourceId`n"
-Write-Host "Note: This uploads Knowledge Sources only. To load audit skills," -ForegroundColor Yellow
-Write-Host "      use Builder > Skills > Create Skill in the SRE Agent UI.`n" -ForegroundColor Yellow
 
 $success = 0
 $failed = 0
 
-# Collect only the 3 core knowledge docs from knowledge/ root (not skills/ subfolder)
-$files = Get-ChildItem -Path $KnowledgeDir -Filter "*.md" -Depth 0
+# Collect knowledge docs + skill playbooks.
+# Exclude agent-persona.md (system prompt) and README.md (documentation only).
+$knowledgeFiles = Get-ChildItem -Path $KnowledgeDir -Filter "*.md" -File |
+    Where-Object { $_.Name -ne "agent-persona.md" }
+$skillFiles = Get-ChildItem -Path $SkillsDir -Filter "*.md" -File |
+    Where-Object { $_.Name -ne "README.md" }
+$files = @($knowledgeFiles + $skillFiles)
 Write-Host "Found $($files.Count) knowledge documents to upload.`n"
 
 $files | ForEach-Object {
@@ -91,9 +90,5 @@ Write-Host "  Failed:  $failed"
 
 if ($failed -gt 0) {
     Write-Host "`nIf uploads failed, you can upload manually:" -ForegroundColor Yellow
-    Write-Host "  UI: sre.azure.com -> Memory & Knowledge -> Upload"
+    Write-Host "  UI: Go to the agent at https://sre.azure.com -> Knowledge -> Upload"
 }
-
-Write-Host "`nNext step: Load audit skills via the SRE Agent UI:" -ForegroundColor Cyan
-Write-Host "  Builder > Skills > Create Skill > Upload"
-Write-Host "  Upload all .md files from: networking-audit-agent/skills/"

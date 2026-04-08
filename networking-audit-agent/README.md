@@ -2,6 +2,12 @@
 
 Azure network architecture and service audit specialist powered by [Azure SRE Agent](https://sre.azure.com). Performs comprehensive network security audits and architecture assessments across Azure environments.
 
+## Scope
+
+This document is for **standalone mode** only (dedicated networking audit agent).
+
+For mode selection (standalone vs subagent), use the master guide at [../README.md](../README.md).
+
 ## Features
 
 - **130+ automated checks** across 8 networking audit domains
@@ -20,11 +26,12 @@ networking-audit-agent/
 │   └── parameters/
 │       ├── dev.bicepparam          # Dev environment parameters
 │       └── prod.bicepparam         # Prod environment parameters
-├── knowledge/                      # Agent knowledge documents (upload to Memory & Knowledge)
-│   ├── agent-persona.md            # Agent system prompt / persona
+├── knowledge/                      # Agent knowledge documents
 │   ├── agent-overview.md           # Agent capabilities and behavior
 │   └── audit-domains.md            # Audit domain reference (130+ checks)
-├── skills/                         # Audit skill playbooks — upload via Builder > Skills
+├── prompts/                        # System prompt source files
+│   └── agent-system-prompt.md      # Agent persona/system prompt text
+├── skills/                         # Audit skill playbooks (10 files)
 │   ├── SKILL.md                    # Main skill orchestration & workflows
 │   ├── nsg-audit.md                # NSG & Firewall checks
 │   ├── vnet-topology.md            # VNet, hub-spoke, vWAN, gateways
@@ -38,7 +45,7 @@ networking-audit-agent/
 ├── scripts/                        # Helper scripts (Bash + PowerShell)
 │   ├── deploy.sh / deploy.ps1     # Deploy infrastructure
 │   ├── setup-rbac.sh / .ps1       # Configure RBAC for target subscriptions
-│   └── upload-knowledge.sh / .ps1 # Upload knowledge docs to the agent
+│   └── archive/                    # Archived scripts (not part of active flow)
 ├── docs/
 │   ├── CICD-SETUP.md              # GitHub Actions secrets & OIDC setup
 │   └── SECURITY.md                # RBAC roles, permissions & security model
@@ -89,7 +96,7 @@ Deploys the user-assigned managed identity that the agent will use.
 2. Select your subscription in the target tenant
 3. Create a new agent named `networking-audit-agent`
 4. Assign the user-assigned managed identity created in Step 1
-5. Upload `knowledge/agent-persona.md` as the agent's persona/system prompt
+5. Copy `prompts/agent-system-prompt.md` into the agent's persona/system prompt field
 
 ### Step 3: Configure RBAC
 
@@ -105,39 +112,35 @@ Grants the agent Reader + Network Contributor access to subscriptions it will au
 ./scripts/setup-rbac.ps1 -PrincipalId "<principal-id>" -SubscriptionIds "<sub-1>", "<sub-2>"
 ```
 
-### Step 4a: Upload Core Knowledge Documents
+### Step 4: Load Skills
 
-Uploads the 3 static reference documents (`agent-overview.md`, `agent-persona.md`, `audit-domains.md`) to the agent's **Knowledge Sources** via the ARM API. These are reference files the agent searches automatically — they are not skills.
+Skills are not loaded through Knowledge Sources. Use one of these options:
 
-**Bash:**
-```bash
-./scripts/upload-knowledge.sh <agent-resource-id>
-```
+**Option A: Plugin Marketplace (Recommended)**
+1. Open **Plugins** in the SRE Agent UI
+2. Add `networking-audit-skill`
+3. Confirm the skill is available to the agent
 
-**PowerShell:**
-```powershell
-./scripts/upload-knowledge.ps1 -AgentResourceId "<agent-resource-id>"
-```
+**Option B: Skill Builder Upload**
+1. Go to **Builder -> Skills -> Create Skill -> Upload**
+2. Upload all `.md` files from `skills/` (except `skills/README.md`)
+3. Attach required tools from `skills/metadata.yaml`
 
-Or upload manually: **sre.azure.com → Memory & Knowledge → Upload** (upload `agent-overview.md`, `agent-persona.md`, `audit-domains.md` from `knowledge/`)
+> **Note:** `prompts/agent-system-prompt.md` is the system prompt source used in Step 2. Skills in `skills/` are operational playbooks and should be loaded through Plugin Marketplace or Skill Builder, not Knowledge Sources.
 
-### Step 4b: Load Audit Skills
+### Step 5: Optional Static Knowledge
 
-Skills are procedural playbooks with tool execution — they live in the **Skill Builder**, not Knowledge Sources. There are two options:
+Knowledge Sources are optional for standalone mode and should contain only static references:
 
-**Option A: Load via Plugin Marketplace (Recommended)**
-1. In the SRE Agent UI, navigate to **Plugins**
-2. Add the `networking-audit-skill` plugin from the marketplace
-3. All 8 audit domain skills are automatically available
+- `knowledge/agent-overview.md`
+- `knowledge/audit-domains.md`
+- Optional ALZ architecture/reference docs
 
-**Option B: Create Skills Manually via Skill Builder (Legacy)**
-1. Download all `.md` files from the [`skills/`](skills/) folder in this repo
-2. Go to **sre.azure.com → Builder → Skills → Create Skill → Upload** and upload the downloaded files
-3. Attach the required tools: `RunAzCliReadCommands`, `SearchResource`, `ExecutePythonCode`, `RunAzCliWriteCommands`, `SearchDocuments`
+Do **not** upload `prompts/agent-system-prompt.md` as Knowledge.
 
-> **Why two separate steps?** Knowledge Sources and Skills are distinct concepts in SRE Agent. Knowledge Sources (`Memory & Knowledge`) are static reference files with no tool access. Skills (`Builder > Skills`) are procedural guides that can execute tools like Azure CLI and Python. The upload scripts only handle Knowledge Sources — skill creation via API is not supported and must be done through the Skill Builder UI.
+The previous knowledge-upload scripts are archived under `scripts/archive/` and not part of the active setup flow.
 
-### Step 5: Connect Repository
+### Step 6: Connect Repository
 
 In the SRE Agent UI, connect this GitHub repository so the agent can reference IaC, scripts, and documentation during investigations.
 

@@ -31,7 +31,6 @@ Upload all files in this directory directly to the agent's **Skills** section at
 ## For Customers
 
 When deploying this agent to a new tenant:
-1. Load skills via Plugin Marketplace or upload via Builder -> Skills
-2. If using Skill Builder upload, upload all `.md` files in this directory except `README.md`
-3. The agent persona (`prompts/agent-system-prompt.md`) references these skills
-4. The agent will automatically load the relevant skill file based on the audit request
+1. Upload all `.md` files in this directory to the agent's knowledge base
+2. The agent persona (`knowledge/agent-persona.md`) references these skills
+3. The agent will automatically load the relevant skill file based on the audit request
