@@ -132,7 +132,7 @@ Skills are procedural playbooks with tool execution — they live in the **Skill
 
 **Option B: Create Skills Manually via Skill Builder (Legacy)**
 1. Download all `.md` files from the [`skills/`](skills/) folder in this repo
-2. Go to **sre.azure.com → Builder → Skills → Create Skill → Upload** and upload the downloaded files
+2. Go to **sre.azure.com → Builder → Skill builder → Create Skill → Upload** and upload the downloaded files
 3. Attach the required tools: `RunAzCliReadCommands`, `SearchResource`, `ExecutePythonCode`, `RunAzCliWriteCommands`, `SearchDocuments`
 
 > **Why two separate steps?** Knowledge Sources and Skills are distinct concepts in SRE Agent. Knowledge Sources (`Memory & Knowledge`) are static reference files with no tool access. Skills (`Builder > Skills`) are procedural guides that can execute tools like Azure CLI and Python. The upload scripts only handle Knowledge Sources — skill creation via API is not supported and must be done through the Skill Builder UI.
