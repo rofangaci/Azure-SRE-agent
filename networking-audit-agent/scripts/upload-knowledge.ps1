@@ -1,9 +1,14 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-    Upload knowledge documents to the SRE Agent knowledge base.
+    Upload core knowledge documents to the SRE Agent.
 .DESCRIPTION
-    Reads all .md files from knowledge/ and uploads them via the ARM API.
+    Uploads the 3 core knowledge documents (agent-overview.md, agent-persona.md,
+    audit-domains.md) from knowledge/ to the agent's Knowledge Sources via the
+    ARM API. These are static reference files, NOT skills.
+
+    Skills (SKILL.md, nsg-audit.md, etc.) must be created separately via the
+    SRE Agent UI: Builder > Skills > Create Skill > Upload.
 .PARAMETER AgentResourceId
     Full ARM resource ID of the agent.
 .EXAMPLE
@@ -43,14 +48,16 @@ $headers = @{
 }
 
 # ── Upload ─────────────────────────────────────────────────────
-Write-Host "`n=== Uploading knowledge documents ===" -ForegroundColor Cyan
+Write-Host "`n=== Uploading core knowledge documents ===" -ForegroundColor Cyan
 Write-Host "Agent: $AgentResourceId`n"
+Write-Host "Note: This uploads Knowledge Sources only. To load audit skills," -ForegroundColor Yellow
+Write-Host "      use Builder > Skills > Create Skill in the SRE Agent UI.`n" -ForegroundColor Yellow
 
 $success = 0
 $failed = 0
 
-# Collect all .md files recursively (knowledge/*.md + knowledge/skills/*.md)
-$files = Get-ChildItem -Path $KnowledgeDir -Filter "*.md" -Recurse
+# Collect only the 3 core knowledge docs from knowledge/ root (not skills/ subfolder)
+$files = Get-ChildItem -Path $KnowledgeDir -Filter "*.md" -Depth 0
 Write-Host "Found $($files.Count) knowledge documents to upload.`n"
 
 $files | ForEach-Object {
@@ -84,5 +91,9 @@ Write-Host "  Failed:  $failed"
 
 if ($failed -gt 0) {
     Write-Host "`nIf uploads failed, you can upload manually:" -ForegroundColor Yellow
-    Write-Host "  UI: Go to the agent at https://sre.azure.com -> Knowledge -> Upload"
+    Write-Host "  UI: sre.azure.com -> Memory & Knowledge -> Upload"
 }
+
+Write-Host "`nNext step: Load audit skills via the SRE Agent UI:" -ForegroundColor Cyan
+Write-Host "  Builder > Skills > Create Skill > Upload"
+Write-Host "  Upload all .md files from: knowledge/skills/ or plugins/networking-audit/skills/networking_audit/"

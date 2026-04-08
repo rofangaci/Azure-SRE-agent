@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Upload knowledge documents to the SRE Agent knowledge base
+# Upload core knowledge documents to the SRE Agent Knowledge Sources.
+# Uploads only the 3 core docs (agent-overview.md, agent-persona.md, audit-domains.md)
+# from knowledge/ root. These are static reference files, NOT skills.
+#
+# Skills (SKILL.md, nsg-audit.md, etc.) must be created separately via:
+#   SRE Agent UI: Builder > Skills > Create Skill > Upload
+#
 # Usage: ./upload-knowledge.sh <agent-resource-id>
 # Example: ./upload-knowledge.sh /subscriptions/.../providers/Microsoft.App/agents/networking-audit-agent
 
@@ -48,12 +54,13 @@ API_VERSION="2025-01-01-preview"
 SUCCESS=0
 FAILED=0
 
-# Collect all .md files: knowledge/*.md and knowledge/skills/*.md
+echo "Note: Uploading Knowledge Sources only. To load audit skills,"
+echo "      use Builder > Skills > Create Skill in the SRE Agent UI."
+echo ""
+
+# Collect only the 3 core knowledge docs from knowledge/ root (not skills/ subfolder)
 FILES=()
 for FILE in "${KNOWLEDGE_DIR}"/*.md; do
-  [[ -f "${FILE}" ]] && FILES+=("${FILE}")
-done
-for FILE in "${KNOWLEDGE_DIR}"/skills/*.md; do
   [[ -f "${FILE}" ]] && FILES+=("${FILE}")
 done
 
@@ -97,6 +104,11 @@ echo ""
 echo "=== Upload Complete ==="
 echo "  Success: ${SUCCESS}"
 echo "  Failed:  ${FAILED}"
+
+echo ""
+echo "Next step: Load audit skills via the SRE Agent UI:"
+echo "  Builder > Skills > Create Skill > Upload"
+echo "  Upload all .md files from: knowledge/skills/ or plugins/networking-audit/skills/networking_audit/"
 
 if [[ ${FAILED} -gt 0 ]]; then
   echo ""
