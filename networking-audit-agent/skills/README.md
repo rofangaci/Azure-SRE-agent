@@ -5,13 +5,13 @@ These files define the agent's audit capabilities across 8 networking domains + 
 ## How to Use
 
 ### Option A: Load via Plugin Marketplace (Recommended)
-The skills are now packaged as a marketplace plugin at `plugins/networking-audit/`. Load them via the SRE Agent UI:
+Load from the SRE Agent Plugin Marketplace:
 1. Navigate to **Plugins**
 2. Add the `networking-audit-skill` plugin from the marketplace
 3. All 8 audit domains + orchestration logic are automatically available
 
 ### Option B: Upload Directly to Agent (Legacy)
-Upload all files in this directory directly to the agent's **Skills** section at [sre.azure.com](https://sre.azure.com). The agent will use these as its operational playbooks during audits.
+Upload all files in this directory to the agent's **Builder -> Skills -> Create Skill -> Upload** flow at [sre.azure.com](https://sre.azure.com). The agent will use these as its operational playbooks during audits.
 
 ## Files
 
