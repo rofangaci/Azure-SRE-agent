@@ -2,25 +2,6 @@
 
 Use this package when you already have a broader SRE main agent and want to add focused networking audit expertise.
 
-## Start Here (Required)
-
-Before setup, open `HANDOFF-SETUP.md`.
-
-It contains the copy/paste-ready content for:
-- Networking custom agent **Instructions** (system prompt)
-- Custom agent **Handoff Description**
-- Main agent **Delegation Rules**
-- Test playground validation steps
-
-Use this `README.md` for the sequence, and `HANDOFF-SETUP.md` for exact field values.
-
-## Detailed UI Guides (No Duplication)
-
-- Step 3 (custom agent fields + copy/paste text): `HANDOFF-SETUP.md` -> **Networking Custom Agent Configuration** and **Instructions Field (Networking Custom Agent)**
-- Step 4 (skills loading options): `skills/README.md`
-- Step 5 (knowledge files and boundaries): `knowledge/README.md` and `prompts/README.md`
-- Step 6 (main-agent routing template + testing): `HANDOFF-SETUP.md` -> **Main Agent System Prompt (Orchestrator)** and **Testing the Handoff**
-
 ## Architecture
 
 - Main agent stays generic for broad operations.
@@ -51,7 +32,9 @@ Grant roles based on intended actions:
 
 ### Step 3: Create Networking Custom Agent
 
-Important: Keep `HANDOFF-SETUP.md` open while doing this step. It contains all exact field values and copy/paste text.
+For this step, open `HANDOFF-SETUP.md` and copy/paste the exact values from:
+- **Networking Custom Agent Configuration**
+- **Instructions Field (Networking Custom Agent)**
 
 In Builder -> Agent Canvas:
 1. Select **Create -> Custom Agent** and set name to `network_audit_specialist`
@@ -62,7 +45,7 @@ In Builder -> Agent Canvas:
 
 ### Step 4: Load Skills
 
-For detailed UI walkthrough and option guidance, see `skills/README.md`.
+For details and examples, see `skills/README.md`.
 
 Option A (recommended): Plugin Marketplace
 1. Add `networking-audit-skill` plugin
@@ -75,7 +58,7 @@ Option B: Manual Skill Builder upload
 
 ### Step 5: Optional Static Knowledge
 
-For exact upload boundaries and examples, see `knowledge/README.md`.
+For upload boundaries and examples, see `knowledge/README.md` and `prompts/README.md`.
 
 If needed, upload only static references to Memory & Knowledge:
 - `knowledge/agent-overview.md`
@@ -86,6 +69,10 @@ Do not upload `prompts/agent-system-prompt.md` as a knowledge file; use it as th
 ### Step 6: Configure Main-Agent Handoff
 
 The main agent (orchestrator) needs routing intelligence to know when to delegate to your networking custom agent.
+
+For this step, open `HANDOFF-SETUP.md` and copy/paste from:
+- **Main Agent System Prompt (Orchestrator)**
+- **Testing the Handoff**
 
 In the main SRE Agent UI:
 1. Go to **Builder -> Agent Canvas** (main agent)
