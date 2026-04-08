@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "plugins": [
+    {
+      "name": "networking-audit-skill",
+      "display_name": "Networking Audit Skill",
+      "description": "Comprehensive Azure networking security and architecture audits against ALZ and WAF standards. Covers 8 domains with 130+ automated checks.",
+      "version": "1.0.0",
+      "author": "rofangaci",
+      "skills_path": "networking-audit-agent/knowledge/skills",
+      "tags": ["networking", "security", "audit", "alz", "landing-zone", "nsg", "firewall", "private-endpoints", "dns"]
+    }
+  ]
+}
