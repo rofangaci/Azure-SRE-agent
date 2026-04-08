@@ -2,6 +2,25 @@
 
 Use this package when you already have a broader SRE main agent and want to add focused networking audit expertise.
 
+## Start Here (Required)
+
+Before setup, open `HANDOFF-SETUP.md`.
+
+It contains the copy/paste-ready content for:
+- Networking custom agent **Instructions** (system prompt)
+- Custom agent **Handoff Description**
+- Main agent **Delegation Rules**
+- Test playground validation steps
+
+Use this `README.md` for the sequence, and `HANDOFF-SETUP.md` for exact field values.
+
+## Detailed UI Guides (No Duplication)
+
+- Step 3 (custom agent fields + copy/paste text): `HANDOFF-SETUP.md` -> **Networking Custom Agent Configuration** and **Instructions Field (Networking Custom Agent)**
+- Step 4 (skills loading options): `skills/README.md`
+- Step 5 (knowledge files and boundaries): `knowledge/README.md` and `prompts/README.md`
+- Step 6 (main-agent routing template + testing): `HANDOFF-SETUP.md` -> **Main Agent System Prompt (Orchestrator)** and **Testing the Handoff**
+
 ## Architecture
 
 - Main agent stays generic for broad operations.
@@ -32,13 +51,18 @@ Grant roles based on intended actions:
 
 ### Step 3: Create Networking Custom Agent
 
+Important: Keep `HANDOFF-SETUP.md` open while doing this step. It contains all exact field values and copy/paste text.
+
 In Builder -> Agent Canvas:
-1. Create custom agent (for example: `network_audit_specialist`)
-2. Set system prompt using `prompts/agent-system-prompt.md`
-3. Add handoff description covering VNet, NSG, Firewall, DNS, Private Endpoints, ALZ networking checks
-4. Restrict this custom agent to networking skills only
+1. Select **Create -> Custom Agent** and set name to `network_audit_specialist`
+2. Set **Instructions** using the text in `prompts/agent-system-prompt.md` (or use the expanded version in `HANDOFF-SETUP.md`)
+3. Set **Handoff Description** using the exact text in `HANDOFF-SETUP.md` -> **Networking Custom Agent Configuration**
+4. Set tools/skills scope to networking only (do not attach unrelated domain skills)
+5. Save/Apply
 
 ### Step 4: Load Skills
+
+For detailed UI walkthrough and option guidance, see `skills/README.md`.
 
 Option A (recommended): Plugin Marketplace
 1. Add `networking-audit-skill` plugin
@@ -51,6 +75,8 @@ Option B: Manual Skill Builder upload
 
 ### Step 5: Optional Static Knowledge
 
+For exact upload boundaries and examples, see `knowledge/README.md`.
+
 If needed, upload only static references to Memory & Knowledge:
 - `knowledge/agent-overview.md`
 - `knowledge/audit-domains.md`
@@ -59,38 +85,14 @@ Do not upload `prompts/agent-system-prompt.md` as a knowledge file; use it as th
 
 ### Step 6: Configure Main-Agent Handoff
 
-The main agent (orchestrator) needs routing intelligence to know when to delegate to your networking custom agent. Configure this in the main agent's **Instructions** field (system prompt).
+The main agent (orchestrator) needs routing intelligence to know when to delegate to your networking custom agent.
 
-#### In the main SRE Agent UI:
-
-1. Go to **Builder → Agent Canvas** (your main agent, not the networking custom agent)
-2. Open the main agent configuration
-3. Go to the **Instructions** tab
-4. Add networking handoff routing to the instructions. Use this template:
-
-```
-[Existing main agent instructions...]
-
-## Agent Delegation Rules
-
-When users ask about any of the following, delegate to the networking specialist:
-- Network architecture, VNet topology, hub-spoke, vWAN, or gateway design
-- NSG rules, Azure Firewall, Application Gateway, or load balancing
-- Private endpoints, DNS resolution, or hybrid DNS connectivity
-- Perimeter security, DDoS protection, Bastion, NAT Gateway
-- Azure Landing Zone (ALZ) networking pillar compliance
-- Network security audit or architecture assessment
-- Any Azure networking service: VNet, ExpressRoute, Azure Bastion, APIM, Front Door, Traffic Manager
-
-Route these requests to: @network_audit_specialist (created in Step 3)
-
-For ambiguous requests (e.g., "I have a connectivity issue"): Ask one clarifying question to determine if it's networking-related before delegating.
-
-Keep other operational requests (VM, database, storage, security, cost) on the main agent.
-```
-
-5. Save/Apply the configuration
-6. Test in the Agent Canvas **Test playground** with networking-related questions to verify handoff triggers
+In the main SRE Agent UI:
+1. Go to **Builder -> Agent Canvas** (main agent)
+2. Open **Instructions**
+3. Paste the routing template from `HANDOFF-SETUP.md` -> **Main Agent System Prompt (Orchestrator)**
+4. Save/Apply
+5. Run validation in `HANDOFF-SETUP.md` -> **Testing the Handoff**
 
 #### How handoff works (context sharing):
 
