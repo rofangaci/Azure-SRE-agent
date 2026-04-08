@@ -68,16 +68,12 @@ Do not upload `prompts/agent-system-prompt.md` as a knowledge file; use it as th
 
 The main agent (orchestrator) needs routing intelligence to know when to delegate to your networking custom agent.
 
-For this step, open `HANDOFF-SETUP.md` and copy/paste from:
-- **Main Agent System Prompt (Orchestrator)**
-- **Testing the Handoff**
-
 In the main SRE Agent UI:
 1. Go to **Builder -> Agent Canvas** (main agent)
 2. Open **Instructions**
 3. Paste the routing template from `HANDOFF-SETUP.md` -> **Main Agent System Prompt (Orchestrator)**
 4. Save/Apply
-5. Run validation in `HANDOFF-SETUP.md` -> **Testing the Handoff**
+5. Run the validation flow in `HANDOFF-SETUP.md` -> **Testing the Handoff**
 
 #### How handoff works (context sharing):
 
