@@ -1,0 +1,6 @@
+{
+  "name": "networking-audit-skill",
+  "description": "Comprehensive Azure networking security and architecture audits against ALZ and WAF standards. Covers 8 domains with 130+ automated checks.",
+  "license": "MIT",
+  "skills": ["skills/"]
+}

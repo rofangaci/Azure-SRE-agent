@@ -11,7 +11,7 @@
     {
       "name": "networking-audit-skill",
       "description": "Comprehensive Azure networking security and architecture audits against ALZ and WAF standards. Covers 8 domains with 130+ automated checks.",
-      "source": "./networking-audit-agent/knowledge/skills"
+      "source": "./plugins/networking-audit/skills/networking_audit"
     }
   ]
 }
