@@ -114,8 +114,8 @@ The networking audit skills are now available as a **marketplace plugin** packag
 2. Add the `networking-audit-skill` plugin from the marketplace
 3. The plugin automatically loads all 8 audit domain skills + orchestration logic
 
-**Option B: Upload Knowledge & Skills Manually (Legacy)**
-For environments where plugin marketplace is not available, use the upload scripts to inject skills directly into the knowledge base:
+**Option B: Upload Skills Directly to Agent (Legacy)**
+For environments where plugin marketplace is not available, use the upload scripts to inject skills directly into the agent:
 
 **Bash:**
 ```bash
@@ -127,9 +127,9 @@ For environments where plugin marketplace is not available, use the upload scrip
 ./scripts/upload-knowledge.ps1 -AgentResourceId "<agent-resource-id>"
 ```
 
-Or upload manually: **sre.azure.com → Agent → Knowledge → Upload** (upload all `.md` files from both `knowledge/` and `knowledge/skills/`)
+Or upload manually: **sre.azure.com → Agent → Skills → Upload** (upload all `.md` files from both `knowledge/skills/` and `plugins/networking-audit/skills/networking_audit/`)
 
-> **Difference:** The plugin marketplace approach (Option A) provides versioning, dependency management, and cleaner separation of concerns. The manual script approach (Option B) directly injects skills into the knowledge base and works in all environments. Both achieve the same end result: the agent gains access to all 8 audit domain skills.
+> **Difference:** The plugin marketplace approach (Option A) provides versioning, dependency management, and cleaner separation of concerns. The direct upload approach (Option B) injects skills directly into the agent and works in all environments. Both achieve the same end result: the agent gains access to all 8 audit domain skills.
 
 ### Step 5: Connect Repository
 

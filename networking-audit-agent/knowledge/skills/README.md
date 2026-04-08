@@ -10,8 +10,8 @@ The skills are now packaged as a marketplace plugin at `plugins/networking-audit
 2. Add the `networking-audit-skill` plugin from the marketplace
 3. All 8 audit domains + orchestration logic are automatically available
 
-### Option B: Upload Manually (Legacy)
-Upload all files in this directory to the agent's **Knowledge** section at [sre.azure.com](https://sre.azure.com). The agent will use these as its operational playbooks during audits.
+### Option B: Upload Directly to Agent (Legacy)
+Upload all files in this directory directly to the agent's **Skills** section at [sre.azure.com](https://sre.azure.com). The agent will use these as its operational playbooks during audits.
 
 ## Files
 
